@@ -1,8 +1,9 @@
 import requests, sys, discord
 from discord.ext import commands
 
-TOKEN = "XXXXXxCHANGE_MExXXXXXX"
+TOKEN = "XXXXX-CHANGE_ME-XXXXX"
 client = discord.Client()
+localFile = "Saved_Cards.txt"
 
 def scrapeCard(cardID):
     url = "https://db.ygoprodeck.com/api/v5/cardinfo.php?name=" + cardID
@@ -18,7 +19,7 @@ def scrapeCard(cardID):
 
 
 def addCards(cardID):
-    f = open("Saved_Cards.txt", "a")
+    f = open(localFile, "a")
     f.write(cardID + '\n')
     f.close()
 
@@ -47,7 +48,7 @@ def discordPush(newCardsList):
 
 
 def checkForNew():
-    localFile = open('Saved_Cards.txt','r').read().split('\n')
+    localSplitList = open(localFile,'r').read().split('\n')
     localCardList = []
     onlineCardList = []
     newCardsList = []
@@ -55,7 +56,7 @@ def checkForNew():
 
     print('Comparing Online Database With Cached Version...')
 
-    for id in localFile:
+    for id in localSplitList:
         localCardList.append(id)
 
     for card in apiIdResponce:
@@ -80,6 +81,5 @@ def scriptInfo():
     print("")
 
     checkForNew()
-
 
 scriptInfo()
