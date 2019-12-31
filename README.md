@@ -13,9 +13,9 @@
  
  
  ## Usage Commands:
- source env/bin/activate (Python Virtual Environment)
- python3 makeCardList.py (Card List Generation)
- python3 YGOBot.py (Notifier)
+ * source env/bin/activate (Python Virtual Environment)
+ * python3 makeCardList.py (Card List Generation)
+ * python3 YGOBot.py (Notifier)
 
 
  ## Prerequisites
