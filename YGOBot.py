@@ -1,9 +1,85 @@
-# Work with Python 3.6
-import discord
+import requests, sys, discord
 from discord.ext import commands
-import json
-import requests
 
-url = requests.get('https://db.ygoprodeck.com/api/v5/cardinfo.php?name=' + cardID)
+TOKEN = "XXXXXxCHANGE_MExXXXXXX"
+client = discord.Client()
 
-print(url.json)
+def scrapeCard(cardID):
+    url = "https://db.ygoprodeck.com/api/v5/cardinfo.php?name=" + cardID
+    imageUrl = "https://storage.googleapis.com/ygoprodeck.com/pics/" + cardID + ".jpg"
+    cardData = requests.get(url).json()
+
+    cardDict = {"id": cardID}
+
+    cardDict["name"] = cardData[0]["name"]
+    cardDict['imageUrl'] = imageUrl
+
+    return cardDict
+
+
+def addCards(cardID):
+    f = open("Saved_Cards.txt", "a")
+    f.write(cardID + '\n')
+    f.close()
+
+
+def discordPush(newCardsList):
+    @client.event
+    async def on_ready():
+        for server in client.guilds:
+            for channel in server.channels:
+                if channel.name == 'ygoupdates':
+                    print("------------------------------------------------")
+                    for newCardID in newCardsList:
+                        embed = discord.Embed( title="New YU-GI-OH Card", description=scrapeCard(newCardID)['name'] + "  -  CLICK IMAGE", color=0xeee657)
+                        embed.set_thumbnail(url=scrapeCard(newCardID)["imageUrl"])
+                        print("Card Found - " + scrapeCard(newCardID)['name'])
+                        await channel.send(embed = embed)
+                        addCards(newCardID)
+                    print("------------------------------------------------")
+                    print("New Cards Have Been Saved")
+                    print("")
+                    print("Updates Sent, Closing...")
+                    print("")
+                    sys.exit(1)
+    client.run(TOKEN)
+    return
+
+
+def checkForNew():
+    localFile = open('Saved_Cards.txt','r').read().split('\n')
+    localCardList = []
+    onlineCardList = []
+    newCardsList = []
+    apiIdResponce = requests.get("https://db.ygoprodeck.com/api/v5/cardinfo.php").json()
+
+    print('Comparing Online Database With Cached Version...')
+
+    for id in localFile:
+        localCardList.append(id)
+
+    for card in apiIdResponce:
+        onlineCardList.append(card['id'])
+
+    newCardsList = set(onlineCardList).difference(set(localCardList))
+
+    if newCardsList:
+        discordPush(newCardsList)
+    else:
+        print("No Updates, Closing..")
+        print("")
+
+
+def scriptInfo():
+
+    print("")
+    print("Python YGOProDeck Card Update Notifier")
+    print("-------------------------------------")
+    print("    By github.com/carlslatter16")
+    print("=====================================")
+    print("")
+
+    checkForNew()
+
+
+scriptInfo()
