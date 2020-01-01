@@ -22,7 +22,7 @@
  * Python3 (sudo apt-get install python3)
  * pip (sudo apt install python3-pip)
  * Discord.py (python3 -m pip install -U discord.py)
- * Requests.py (python3 -m pip install -U requests.py)
+ * Requests (python3 -m pip install -U requests)
  
 
  ## Notice: 
