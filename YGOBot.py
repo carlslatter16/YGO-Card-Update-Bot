@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 import requests, sys, discord
 from discord.ext import commands
 
-TOKEN = "XXXXX-CHANGE_ME-XXXXX"
+TOKEN = "XXXXXXXXXXXXXXXXX"
 client = discord.Client()
 localFile = "Saved_Cards.txt"
 
