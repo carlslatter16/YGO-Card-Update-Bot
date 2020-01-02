@@ -32,6 +32,7 @@
  ## To-Do: 
  * Private Message Support
  * API Status Error Checking
+ * Proper Virtual Env Usage (Placeholder For Now)
 
 
  ## Built With:
