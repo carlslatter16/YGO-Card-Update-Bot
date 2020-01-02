@@ -34,7 +34,8 @@ def discordPush(newCardsList):
                 if channel.name == 'ygoupdates':
                     print("------------------------------------------------")
                     for newCardID in newCardsList:
-                        embed = discord.Embed( title="New YU-GI-OH Card", description=scrapeCard(newCardID)['name'] + "  -  CLICK IMAGE", color=0xeee657)
+                        embed = discord.Embed( title=scrapeCard(newCardID)['name'], description= + "Click Image If On Desktop", color=0xeee657)
+                        embed.add_field(name="Link: ", value="https://db.ygoprodeck.com/card/?search=" + scrapeCard(newCardID)['name'], inline=False)
                         embed.set_thumbnail(url=scrapeCard(newCardID)["imageUrl"])
                         print("Card Found - " + scrapeCard(newCardID)['name'])
                         await channel.send(embed = embed)
